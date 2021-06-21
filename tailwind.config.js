@@ -10,12 +10,20 @@ module.exports = {
     extend: {
       colors,
       animation: {
-        spinslow: 'spin 20s linear infinite'
+        wiggle: 'wiggle .5s ease-in-out infinite'
+      },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-6deg)' },
+          '50%': { transform: 'rotate(6deg)' }
+        }
       }
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      animation: ['hover', 'focus']
+    },
   },
   plugins: [],
 };
