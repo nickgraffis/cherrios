@@ -12,6 +12,7 @@
   "dependencies": {
     "@uiw/react-md-editor": "^3.3.7",
     "concurrently": "^6.0.2",
+    "easymde": "^2.15.0",
     "netlify-identity-widget": "^1.9.1",
     "nodemailer": "^6.6.2",
     "nodemailer-markdown": "^1.0.3",

@@ -1,7 +1,5 @@
 import React, { FC, useMemo, useRef, useState } from 'react'
 import { useEffect } from 'react';
-import SimpleMDE from "react-simplemde-editor";
-import twemoji from 'twemoji'
 
 type Props = {
   title: string,
