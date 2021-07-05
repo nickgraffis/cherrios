@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors');
+const flattenColorPalette = require('tailwindcss/lib/util/flattenColorPalette').default;
 
 module.exports = {
   mode: 'jit',
@@ -25,5 +26,7 @@ module.exports = {
       animation: ['hover', 'focus']
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography')
+  ],
 };
