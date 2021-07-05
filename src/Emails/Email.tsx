@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useEmail } from '../lib/Queries';
 import { timeSince } from '../lib/utils';
 import {render} from 'react-dom'
+import MarkdownPreview from '@uiw/react-markdown-preview';
 
 export const Email = () => {
   const { id } = useParams<{id: string}>();
@@ -35,9 +36,7 @@ export const Email = () => {
         <p className="w-96 truncate">{timeSince(data.fields.lastModified)} ago</p>
       </div>
       <article className="prose">
-        <ReactMarkdown>
-          {data.fields.body}
-        </ReactMarkdown>
+        <MarkdownPreview source={data.fields.body} rehypePlugins={[rehypeRaw]} />
       </article>
     </div>
     }
