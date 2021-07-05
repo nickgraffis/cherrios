@@ -28,7 +28,7 @@ export const Router: FC = () => {
     <Layout>
       <Switch>
         <Route path="/login" exact>
-          <Login redirectRoute={redirectRoute} />
+          <Login redirectRoute={redirectRoute} logout={false}/>
         </Route>
         <Route path="/logout" exact>
           <Login redirectRoute={redirectRoute} logout={true}/>

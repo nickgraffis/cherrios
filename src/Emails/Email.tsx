@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useEmail } from '../lib/Queries';
 import { timeSince } from '../lib/utils';
+import {render} from 'react-dom'
 
 export const Email = () => {
   const { id } = useParams<{id: string}>();
@@ -34,7 +35,9 @@ export const Email = () => {
         <p className="w-96 truncate">{timeSince(data.fields.lastModified)} ago</p>
       </div>
       <article className="prose">
-        <ReactMarkdown children={data.fields.body} rehypePlugins={[rehypeRaw]} />
+        <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+          {data.fields.body}
+        </ReactMarkdown>
       </article>
     </div>
     }
