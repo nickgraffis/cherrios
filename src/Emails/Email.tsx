@@ -9,6 +9,7 @@ import { useEmail } from '../lib/Queries';
 import { timeSince } from '../lib/utils';
 import {render} from 'react-dom'
 import MarkdownPreview from '@uiw/react-markdown-preview';
+import marked from 'marked'
 
 export const Email = () => {
   const { id } = useParams<{id: string}>();
@@ -35,9 +36,7 @@ export const Email = () => {
         <p className="font-black text-2xl">Last Updated: </p>
         <p className="w-96 truncate">{timeSince(data.fields.lastModified)} ago</p>
       </div>
-      <article className="prose">
-        <MarkdownPreview source={data.fields.body} rehypePlugins={[rehypeRaw]} />
-      </article>
+        <article className="prose" dangerouslySetInnerHTML={{ __html: marked(data.fields.body)}} /> 
     </div>
     }
   </>)
