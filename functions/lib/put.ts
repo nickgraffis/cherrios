@@ -1,6 +1,7 @@
 import { HandlerResponse } from '@netlify/functions';
 import { get } from './get';
-const airtable = require('airtable').base('app93GlT9ctaTE8lI');
+const Airtable = require('airtable');
+const airtable = new Airtable({apiKey: process.env.AIRTABLE_API_KEY}).base('app93GlT9ctaTE8lI');
 const { CHAO_ADMIN_KEY } = process.env
 
 export type PutInput = {

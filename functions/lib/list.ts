@@ -1,5 +1,6 @@
 import { HandlerResponse } from '@netlify/functions';
-const airtable = require('airtable').base('app93GlT9ctaTE8lI');
+const Airtable = require('airtable');
+const airtable = new Airtable({apiKey: process.env.AIRTABLE_API_KEY}).base('app93GlT9ctaTE8lI');
 
 export type ListInput = {
   base: string,
