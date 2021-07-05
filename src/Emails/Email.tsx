@@ -35,7 +35,7 @@ export const Email = () => {
         <p className="w-96 truncate">{timeSince(data.fields.lastModified)} ago</p>
       </div>
       <article className="prose">
-        <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+        <ReactMarkdown>
           {data.fields.body}
         </ReactMarkdown>
       </article>
