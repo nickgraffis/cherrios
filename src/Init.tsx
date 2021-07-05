@@ -1,17 +1,11 @@
 import './tailwind.css'
 import React, { FC, Suspense, useContext, useEffect, useState } from 'react'
-import { App } from './Compose/App'
-import { Groups } from './Groups/Groups'
-import { Settings } from './Settings/Settings'
 import netlifyIdentity, { User } from 'netlify-identity-widget';
 import { BrowserRouter as Router, Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { logoutUser, loginUser } from './lib/identityActions'
-import { Group } from './Contacts/Group'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import { Login } from './Login'
 import { Router as RoutingComponent } from './Router';
-import { Toast } from './Toast/Toast'
 
 /**
  * Initialize netlify identity widget
@@ -50,8 +44,6 @@ export const Init: FC = () => {
  * State manager to handle user authentication
  */
   const [user, setUser] = useState<{ user: User } | null>(null);
-
-  const [account, setAccount] = useState<{ account: any } | null>(null);
 
   /**
   * When we start check localhost for currentPoseidonUser

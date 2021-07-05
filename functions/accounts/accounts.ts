@@ -11,7 +11,6 @@ const handler: Handler = async (event, context) => {
   const segments: string[] = event.path.replace(/\.netlify\/functions\/[^/]+/, '')
   .split('/').filter(Boolean)
   const user: { sub: false } | any = context?.clientContext?.user || { sub: false };
-
   if (!user.sub) return {
     statusCode: 402,
     body: JSON.stringify({ message: 'User authentication was not provided.' })

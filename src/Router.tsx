@@ -30,6 +30,9 @@ export const Router: FC = () => {
         <Route path="/login" exact>
           <Login redirectRoute={redirectRoute} />
         </Route>
+        <Route path="/logout" exact>
+          <Login redirectRoute={redirectRoute} logout={true}/>
+        </Route>
         <Route path="/unsubscribe/:id" exact>
           <Unsubscribe />
         </Route>
