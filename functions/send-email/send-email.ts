@@ -86,27 +86,26 @@ const handler: Handler = async (event, context) => {
 
       console.log(groups)
   
-      await Mailer.sendEmail({
+      const mail = await Mailer.sendEmail({
         body: `${body} <p><br></br> Click [here](http://localhost:3000/unsubscribe/${user.sub}) to unsubscribe from these emails.</p>`,
         to: groups,
         from,
         refreshToken,
         subject
-      }).then((mail: any) => {
-        console.log(mail)
-        put({
-          base: 'Queue',
-          user: user.sub,
-          id: queueId,
-          fields: {
-            status: 'Email sent!',
-            advancedStatus: `Sent email with messageId of ${mail.messageId}`,
-            to: mail.accepted.join(', '),
-            rejected: mail.rejected.join(', '),
-            accepted: mail.accepted.join(', '),
-            messageId: mail.messageId
-          }
-        })
+      })
+
+      await put({
+        base: 'Queue',
+        user: user.sub,
+        id: queueId,
+        fields: {
+          status: 'Email sent!',
+          advancedStatus: `Sent email with messageId of ${mail.messageId}`,
+          to: mail.accepted.join(', '),
+          rejected: mail.rejected.join(', '),
+          accepted: mail.accepted.join(', '),
+          messageId: mail.messageId
+        }
       })
     }
 
