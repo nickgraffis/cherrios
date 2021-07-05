@@ -12,7 +12,7 @@ const handler: Handler = async (event, context) => {
       return revoke(event, context)
     default:
       return {
-        statusCode: 404,
+        statusCode: 405,
         body: JSON.stringify({ message: 'We coudn\'t figure out what you were trying to do.' })
       }
   }

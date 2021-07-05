@@ -1,146 +1,177 @@
-// Docs on event and context https://www.netlify.com/docs/functions/#the-handler-method
 import { list } from '../lib/list';
 import { get } from '../lib/get';
 import { post } from '../lib/post';
 import { Handler } from '@netlify/functions';
 import { put } from '../lib/put';
 import { del } from '../lib/delete';
+import { segment } from '../lib/segments';
+import { safeAwait } from '../lib/safeawait';
+import { updateGroupCount } from '../lib/updateGroupCount';
 
 const handler: Handler = async (event, context) => {
-  const segments: string[] = event.path.replace(/\.netlify\/functions\/[^/]+/, '')
-  .split('/').filter(Boolean)
+  const segments: string[] = segment(event)
   const user: { sub: false } | any = context?.clientContext?.user || { sub: false };
 
   if (!user.sub) return {
-    statusCode: 402,
+    statusCode: 401,
     body: JSON.stringify({ message: 'User authentication was not provided.' })
   }
 
   switch (event.httpMethod) {
     case 'GET':
       if (segments.length === 0) {
-        if (! event?.queryStringParameters?.group_id) return {
+        if (!event?.queryStringParameters?.group_id) return {
           statusCode: 403,
           body: JSON.stringify({ message: 'You must provide a group id.' })
         }
-        return await list({
-          base: 'Contacts',
-          filters: {
-            id: user.sub,
-            group_id: event.queryStringParameters.group_id,
-            ...(event.queryStringParameters?.name) && { name: event.queryStringParameters.name }
-          },
-          ...(event.queryStringParameters?.offset) && { offset: parseInt(event.queryStringParameters.offset) },
-          ...(event.queryStringParameters?.limit) && { limit: parseInt(event.queryStringParameters.limit) }
-        })
+        const [error, response] = await safeAwait(
+          list({
+            base: 'Contacts',
+            filters: {
+              id: user.sub,
+              group_id: event.queryStringParameters.group_id,
+              ...(event.queryStringParameters?.name) && { name: event.queryStringParameters.name }
+            },
+            ...(event.queryStringParameters?.offset) && { offset: parseInt(event.queryStringParameters.offset) },
+            ...(event.queryStringParameters?.limit) && { limit: parseInt(event.queryStringParameters.limit) }
+          })
+        )
+
+        if (error) return {
+          statusCode: 500,
+          body: JSON.stringify({ error })
+        }
+        return response 
       } 
       if (segments.length === 1) {
         const [id] = segments
-        return get({
-          base: 'Contacts',
-          id,
-          user: user.sub
-        })
+        const [error, response] = await safeAwait(
+          get({
+            base: 'Contacts',
+            id,
+            user: user.sub
+          })
+        )
+
+        if (error) return {
+          statusCode: 500,
+          body: JSON.stringify({ error })
+        }
+        return response
       } 
 
       return {
-        statusCode: 404,
+        statusCode: 406,
         body: JSON.stringify({ message: 'Pass a max of 1 segment to find a particular record.' })
       }
     case 'POST':
       if (!event?.body) return {
-        statusCode: 404,
+        statusCode: 406,
         body: JSON.stringify({ message: 'You have to provide a body to create a record.' })
       }
+
       const { group_id } = JSON.parse(event.body)[0]
       
-      const group = await get({
-        base: 'Groups',
-        id: group_id,
-        user: user.sub
-      }) 
-      console.log(group)
+      const [updateGroupError, updateGroupResponse] = await safeAwait(
+        updateGroupCount(group_id, user.sub, true)
+      )
 
-      const oldCount = group?.body ? JSON.parse(group.body).record.fields.contactCount : 0
+      if (updateGroupError || !updateGroupResponse) return {
+        statusCode: 500,
+        body: JSON.stringify({ updateGroupError })
+      }
 
-      await put({
-        base: 'Groups',
-        fields: {
-          contactCount: oldCount + 1
-        },
-        user: user.sub,
-        id: group_id
-      })
+      const [error, response] = await safeAwait(
+        post({
+          base: 'Contacts',
+          fields: JSON.parse(event.body),
+          user: user.sub
+        })
+      )
 
-      return post({
-        base: 'Contacts',
-        fields: JSON.parse(event.body),
-        user: user.sub
-      })
+      if (error) return {
+        statusCode: 500,
+        body: JSON.stringify({ error })
+      }
+      return response
     case 'PUT':
       if (!event?.body) return {
-        statusCode: 404,
+        statusCode: 406,
         body: JSON.stringify({ message: 'You have to provide a body to create a record.' })
       }
 
       if (segments.length === 1) {
         const [id] = segments
-        return put({
-          base: 'Contacts',
-          user: user.sub,
-          id,
-          fields: JSON.parse(event.body)
-        })
+        const [error, response] = await safeAwait(
+          put({
+            base: 'Contacts',
+            user: user.sub,
+            id,
+            fields: JSON.parse(event.body)
+          })
+        )
+
+        if (error) return {
+          statusCode: 500,
+          body: JSON.stringify({ error })
+        }
+        return response
       } 
 
       return {
-        statusCode: 404,
+        statusCode: 406,
         body: JSON.stringify({ message: 'Pass a min of 1 segment to update a particular record.' })
       }
     case 'DELETE':
       if (segments.length === 1) {
         const [id] = segments
+        const [contactError, contactResponse] = await safeAwait(
+          get({
+            base: 'Contacts',
+            id,
+            user: user.sub
+          })
+        )
+        
+        if (contactError || !contactResponse?.body) return {
+          statusCode: 500,
+          body: JSON.stringify({ contactError })
+        }
 
-        const contact = await get({
-          base: 'Contacts',
-          id,
-          user: user.sub
-        })
-
-        const { group_id } = contact?.body ? JSON.parse(contact.body).record.fields.group_id : { group_id: '' }
+        const { group_id } = JSON.parse(contactResponse.body).record.fields
       
-        const group = await get({
-          base: 'Groups',
-          id: group_id,
-          user: user.sub
-        }) 
+        const [updateGroupError, updateGroupResponse] = await safeAwait(
+          updateGroupCount(group_id, user.sub, false)
+        )
+  
+        if (updateGroupError || !updateGroupResponse) return {
+          statusCode: 500,
+          body: JSON.stringify({ updateGroupError })
+        }
 
-        const oldCount = group?.body ? JSON.parse(group.body).record.fields.contactCount : 0
+        const [error, response] = await safeAwait(
+          del({
+            base: 'Contacts',
+            id,
+            user: user.sub
+          })
+        )
 
-        await put({
-          base: 'Groups',
-          fields: {
-            contactCount: oldCount - 1
-          },
-          user: user.sub,
-          id: group_id
-        })
-
-        return del({
-          base: 'Contacts',
-          id,
-          user: user.sub
-        })
+        if (error) return {
+          statusCode: 500,
+          body: JSON.stringify({ error })
+        }
+        return response
       } 
 
       return {
-        statusCode: 404,
+        statusCode: 406,
         body: JSON.stringify({ message: 'Pass a min of 1 segment to delete a particular record.' })
       }
 
     default:
       return {
-        statusCode: 404,
+        statusCode: 405,
         body: JSON.stringify({ message: 'Couldn\'t find what you were looking for.' })
       }
   }
