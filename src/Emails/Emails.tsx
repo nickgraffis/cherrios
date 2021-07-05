@@ -63,6 +63,11 @@ export const Emails: FC<Props> = () => {
     changeFilter(e.target.value)
   }
 
+  useEffect(() => {
+    let user = netlifyIdentity.currentUser()
+    console.log(user)
+  }, [])
+
   return (<div>
         <p className={`font-black text-3xl text-yellow-500 pb-6`}>Emails</p>
         <div className="w-full flex space-x-4">

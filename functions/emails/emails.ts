@@ -10,7 +10,7 @@ const handler: Handler = async (event, context) => {
   const user: { sub: false } | any = context?.clientContext?.user || { sub: false };
   const segments: string[] = event.path.replace(/\.netlify\/functions\/[^/]+/, '')
   .split('/').filter(Boolean)
-
+  
   switch (event.httpMethod) {
     case 'GET':
       if (segments.length === 0) {
@@ -35,7 +35,7 @@ const handler: Handler = async (event, context) => {
 
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: 'Pass a max of 1 segment to find a particular record.' })
+        body: JSON.stringify({ message: `Pass a max of 1 segment to find a particular record. ${segments}` })
       }
     case 'POST':
       if (!event?.body) return {
