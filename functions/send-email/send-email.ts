@@ -74,7 +74,7 @@ const handler: Handler = async (event, context) => {
         }
       }
 
-      put({
+      await put({
         base: 'Queue',
         user: user.sub,
         id: queueId,
@@ -86,7 +86,7 @@ const handler: Handler = async (event, context) => {
 
       console.log(groups)
   
-      Mailer.sendEmail({
+      await Mailer.sendEmail({
         body: `${body} <p><br></br> Click [here](http://localhost:3000/unsubscribe/${user.sub}) to unsubscribe from these emails.</p>`,
         to: groups,
         from,
