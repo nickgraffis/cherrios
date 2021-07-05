@@ -110,7 +110,7 @@ const handler: Handler = async (event, context) => {
       })
     }
 
-    readyEmail()
+    await readyEmail()
 
     return {
       statusCode: 200,

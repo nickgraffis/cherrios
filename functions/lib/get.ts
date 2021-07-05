@@ -11,7 +11,6 @@ export type GetInput = {
 
 export const get = async ({ base, id, user }: GetInput): Promise<HandlerResponse> => {
   return new Promise(resolve => {
-    console.log('getting group')
     airtable(base).find(id, (err: any, record: any) => {
       if (err) { 
         console.log(err)
