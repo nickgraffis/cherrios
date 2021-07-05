@@ -10,7 +10,7 @@ const handler: Handler = async (event, context) => {
   const user: { sub: false } | any = context?.clientContext?.user || { sub: false };
   const segments: string[] = event.path.replace(/\.netlify\/functions\/[^/]+/, '')
   .split('/').filter(Boolean)
-  
+  console.log(event.path)
   switch (event.httpMethod) {
     case 'GET':
       if (segments.length === 0) {
