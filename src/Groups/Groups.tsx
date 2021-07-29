@@ -5,12 +5,12 @@ import netlifyIdentity from 'netlify-identity-widget';
 import axios from 'axios';
 import { useCreateGroup, useGroups } from '../lib/Queries';
 import { NavBar } from '../NavBar';
+import { useToasts } from '../Toast/Toast'
 
 type Props = { }
 
 export const Groups: FC<Props> = () => {
   const auth = useAuth()
-
   const { data, isLoading, isError, isSuccess } = useGroups();
   const createGroup = useCreateGroup();
   const newGroup = () => {

@@ -40,11 +40,11 @@ export const ContactRow: FC<Props> = ({ name, email, createdTime, id, groupId }:
   }
 
   return (
-      <div className="flex items-end border-b py-4 border-yellow-500">
+      <div className="flex items-end border-b py-4 border-rose-500">
         <div className="w-72">
-          <p className={`${!editing ? '' : 'hidden'} font-black text-yellow-600 truncate`}>{name}</p>
+          <p className={`${!editing ? '' : 'hidden'} font-black text-rose-500 truncate`}>{name}</p>
           <p className={`${!editing ? '' : 'hidden'} font-semibold text-gray-800 truncate`}>{email}</p>
-          <input onKeyDown={handleKeyDown} ref={nameRef} onChange={(e) => setNameInput(e.target.value)} className={`${!editing ? 'hidden' : ''} appearance-none bg-transparent font-black text-yellow-600 focus:outline-none`} value={nameInput} />
+          <input onKeyDown={handleKeyDown} ref={nameRef} onChange={(e) => setNameInput(e.target.value)} className={`${!editing ? 'hidden' : ''} appearance-none bg-transparent font-black text-rose-500 focus:outline-none`} value={nameInput} />
           <input onKeyDown={handleKeyDown} onChange={(e) => setEmailInput(e.target.value)} className={`${!editing ? 'hidden' : ''} appearance-none bg-transparent font-semibold text-gray-800 focus:outline-none`} value={emailInput} />
         </div>
         <div className="flex-grow flex items-center space-x-2 mx-3">

@@ -20,7 +20,7 @@ export const Router: FC = () => {
   const [redirectRoute, setRedirectRoute] = useState<string>('/')
   const auth = useAuth();
   const location = useLocation();
-  
+  console.log(auth);
   useEffect(() => {
     setRedirectRoute(location.pathname + location.search)
   }, [])

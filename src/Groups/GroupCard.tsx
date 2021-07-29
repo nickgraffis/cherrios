@@ -72,7 +72,7 @@ export const GroupCard: FC<Props> = ({ groupName, groupColor, contactCount, id }
   ]
 
   const updateGroup = useUpdateGroup(id)
-  const { add } = useToasts()
+  const { add }: any = useToasts()
 
   const nameRef = useRef<HTMLInputElement>(null)
   const setFocus = () => { 
@@ -103,7 +103,7 @@ export const GroupCard: FC<Props> = ({ groupName, groupColor, contactCount, id }
     setColor(c); 
     setShowColor(false) 
     updateGroup.mutate({ color: c })
-    add("Click to dismiss!")
+    add("Click to dismiss!", 0)
   }
 
   const lookForConfirmation = () => {

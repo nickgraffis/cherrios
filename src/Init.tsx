@@ -68,7 +68,6 @@ export const Init: FC = () => {
   useEffect(() => {
     if (!user) logoutUser();
     else loginUser();
-    if (user) console.log(netlifyIdentity.currentUser()?.token?.access_token);
   }, [user]);
   
   const updateAuth = (user: { user: User } | null) => {

@@ -4,6 +4,7 @@ import { list } from '../lib/list';
 import Mailer from '../lib/mailer';
 import { post } from '../lib/post';
 import { put } from '../lib/put';
+const { chaoSignature } = require('../templates/chao-sig');
 
 const handler: Handler = async (event, context) => {
   try {
@@ -87,7 +88,9 @@ const handler: Handler = async (event, context) => {
       console.log(groups)
   
       const mail = await Mailer.sendEmail({
-        body: `${body} <p><br></br> Click [here](http://localhost:3000/unsubscribe/${user.sub}) to unsubscribe from these emails.</p>`,
+        body: `${body} 
+        ${chaoSignature}
+        <p><br></br> Click [here](http://localhost:3000/unsubscribe/${user.sub}) to unsubscribe from these emails.</p>`,
         to: groups,
         from,
         refreshToken,
