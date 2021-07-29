@@ -1,9 +1,10 @@
 import React, { FC, useEffect } from "react";
+import netlifyIdentity from 'netlify-identity-widget';
 import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import { App } from "./Compose/App";
 import { Group } from "./Contacts/Group";
 import { Groups } from "./Groups/Groups";
-import { useAuth } from "./Init";
+import { IdentityContext, useAuth } from "./Init";
 import { Login } from "./Login";
 import { Settings } from "./Settings/Settings";
 import { useState } from "react";

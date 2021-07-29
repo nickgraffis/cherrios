@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
-import { useAuth } from './Init';
+import { IdentityContext, useAuth } from './Init';
 import netlifyIdentity from 'netlify-identity-widget';
 import { useHistory } from 'react-router-dom';
 

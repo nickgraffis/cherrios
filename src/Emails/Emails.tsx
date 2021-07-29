@@ -1,16 +1,10 @@
 import React, { FC, useMemo, useRef, useState } from 'react'
-import { useAuth } from '../Init';
 import netlifyIdentity from 'netlify-identity-widget';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import { useEffect } from 'react';
-import { useEmails, useGroup } from '../lib/Queries';
+import { useEmails } from '../lib/Queries';
 import { InView } from 'react-intersection-observer';
 import { useCallback } from 'react';
 import _ from 'lodash';
-import { NewContact } from '../Contacts/NewContact';
-import { ContactRow } from '../Contacts/ContactRow';
-import { NavBar } from '../NavBar';
 import { EmailRow } from './EmailRow';
 
 type Props = { }

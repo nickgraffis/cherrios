@@ -1,4 +1,4 @@
-import netlifyIdentity, { currentUser } from 'netlify-identity-widget';
+import netlifyIdentity, { currentUser, refresh } from 'netlify-identity-widget';
 
 export function loginUser() {
   const user = currentUser();

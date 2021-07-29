@@ -1,9 +1,9 @@
 import React, { FC } from "react"
 import { Link } from "react-router-dom"
-import { useAuth } from "./Init"
+import { IdentityContext } from "./Init"
 
 export const NavBar: FC = () => {
-  const auth = useAuth()
+  const auth = IdentityContext
 
   return (
     <div className="flex pt-6 pb-3 justify-between items-center bg-white z-40 sticky top-0">
