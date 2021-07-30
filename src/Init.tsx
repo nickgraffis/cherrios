@@ -13,7 +13,7 @@ import { Router as RoutingComponent } from './Router';
  * Changing the user state will login or logout the user with netlify identity widget
  */
  export const IdentityContext = React.createContext(null);
-const AuthContext = React.createContext<{ user: User } | null>(null);
+const AuthContext = React.createContext<any>(null);
 const AuthUpdateContext = React.createContext({});
 
 export function useAuth() {
@@ -37,7 +37,7 @@ export const Init: FC = () => {
 /**
  * State manager to handle user authentication
  */
-  const [user, setUser] = useState<any>(netlifyIdentity.currentUser());
+  const [user, setUser] = useState<any>(netlifyIdentity.currentUser()?.jwt());
 
   /**
   * When we start check localhost for currentPoseidonUser
