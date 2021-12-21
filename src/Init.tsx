@@ -37,6 +37,7 @@ export const Init: FC = () => {
 /**
  * State manager to handle user authentication
  */
+//@ts-ignore
   const [user, setUser] = useState<any>(netlifyIdentity.currentUser()?.jwt());
 
   /**

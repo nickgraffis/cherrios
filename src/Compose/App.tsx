@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import SimpleMDE from "react-simplemde-editor";
 import twemoji from 'twemoji'
 import { Input } from './Input';
-import { IdentityContext } from '../Init';
+import { IdentityContext, useAuth } from '../Init';
 import { useAccounts, useCreateEmail, useEmail, useGroups, useUpdateEmail } from '../lib/Queries';
 import { useHistory, useParams } from 'react-router-dom';
 import rehypeRaw from 'rehype-raw'
@@ -27,7 +27,7 @@ export const App: FC<Props> = ({ fromDraft }: Props) => {
   const [loadedDraft, setLoadedDraft] = useState<boolean>(false)
   const { id } = useParams<{id: string}>();
   const [draftId, setDraftId] = useState<string>('')
-  const auth = IdentityContext
+  const auth = useAuth()
   const email: any = fromDraft ? useEmail(id) : () => { }
   const history = useHistory();
   const [unsubscribeLink, setUnsubscribeLink] = useState<boolean>(true)
