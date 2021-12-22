@@ -16,6 +16,7 @@ import { EmailView } from "./Emails/EmailView";
 import { NotFound } from "./NotFound";
 import { Email } from "./Emails/Email";
 import { Help } from "./Help/Help";
+import { OutlookOAuth2 } from "./Settings/OutlookOAuth2";
 
 export const Router: FC = () => {
   const [redirectRoute, setRedirectRoute] = useState<string>('/')
@@ -68,6 +69,9 @@ export const Router: FC = () => {
             </Route> 
             <Route path="/gmail" exact>
               <GmailOAuth2 />
+            </Route> 
+            <Route path="/outlook" exact>
+              <OutlookOAuth2 />
             </Route> 
             <Route path="*">
               <NotFound />

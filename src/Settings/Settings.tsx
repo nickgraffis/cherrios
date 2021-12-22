@@ -16,6 +16,11 @@ export const Settings: FC<Props> = () => {
     setEditing(false)
 
   }
+  const OutlookAPIUrl = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?'
+  const OutlookScope = 'offline_access user.read mail.read'
+  const OutlookClientId = 'd67a3ccf-2032-4694-aff8-d194f5a3340b'
+  const OutlookRedirect = 'http://localhost:3000/outlook'
+  const OutlookConnectionUrl = `${OutlookAPIUrl}state=12345&response_type=code&response_mode=query&client_id=${OutlookClientId}&redirect_uri=${OutlookRedirect}&scope=${OutlookScope}`
   const { data, isLoading, isError, isSuccess } = useAccounts()
   const GoogleClientId = '893273143205-teb11av0vhccursp7v3f1roms8ngdftf.apps.googleusercontent.com'
   const GoogleScope = 'https://mail.google.com/'
@@ -86,12 +91,19 @@ export const Settings: FC<Props> = () => {
             <div className="w-1/4 absolute h-1 -bottom-1 right-1 bg-[#4285f4]"></div>
             <div className="w-1/4 absolute h-1 -bottom-1 right-1/4 bg-[#fbbc04]"></div>
           </a>
+          <a href={OutlookConnectionUrl} className="flex border-4 border-lightBlue-600 items-center justify-center space-x-2 px-4 py-2 shadow-md rounded-md cursor-pointer transform hover:shadow-lg hover:-translate-y-1 transition-transform duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-lightBlue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+            <span className="font-bold text-blue-400">Connet With Outlook</span>
+          </a>
           <a className="flex border-4 border-lightBlue-600 items-center justify-center space-x-2 px-4 py-2 shadow-md rounded-md cursor-pointer transform hover:shadow-lg hover:-translate-y-1 transition-transform duration-150">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-lightBlue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
             </svg>
             <span className="font-bold text-blue-400">Connet With STMP</span>
           </a>
+
         </div>
         {isLoading ? <p>Loading...</p> : data.map(({ id }: any, i: number) => 
             <AccountCard id={id} key={i} url={GmailConnectionUrl} />
